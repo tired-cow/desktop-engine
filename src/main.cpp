@@ -7,9 +7,13 @@
 #include <GL/glew.h>
 #include <iostream>
 #include <GL/glx.h>
+#include <fstream>
 #include <cstring>
 #include <GL/gl.h>
+#include <string>
 
+
+static void create_shader_program(GLuint &);
 
 
 // Pulled directly form https://xcb.freedesktop.org/opengl/
@@ -124,6 +128,9 @@ int main() {
     value_mask, 
     value_list
   );
+  
+
+  // NOTE: MAKE IT SO U CAN'T ALT-TAB BOZO
 
 
   // Provide hints to DE on how window should be drawn
@@ -171,16 +178,29 @@ int main() {
   // Stuff for OpenGL
   glewInit();
   
-  const GLfloat vert_buffer_data[] = {
-    -1.0f, -1.0f, 0.0f,
-     1.0f, -1.0f, 0.0f,
-     0.0f,  1.0f, 0.0f,
+  const GLfloat positions[3][2] = {
+    {-0.5f, -0.5f},
+    { 0.0f,  0.5f},
+    { 0.5f, -0.5f}
   };
-  GLuint vertex_buffer;
-  glGenBuffers(1, &vertex_buffer);
-  glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vert_buffer_data), vert_buffer_data, GL_STATIC_DRAW);
+
+  GLuint vb;
+  glCreateBuffers(1, &vb);
+  glNamedBufferStorage(vb, sizeof(positions), positions, 0);
+
+  GLuint va;
+  glGenVertexArrays(1, &va);
+  glBindVertexArray(va);
+  glBindBuffer(GL_ARRAY_BUFFER, vb);
+  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (const void*)0);
+  glEnableVertexAttribArray(0);
+
+
+  GLuint shader_program_id;
+  create_shader_program(shader_program_id);
   
+
+  glUseProgram(shader_program_id);
 
   // Main loop taken from link below
   // https://xcb.freedesktop.org/opengl/
@@ -192,13 +212,11 @@ int main() {
       
     switch(event->response_type & ~0x80) {
       case XCB_EXPOSE: {
-        glClear(GL_COLOR_BUFFER_BIT);
+        static const float black[] = {0.0f, 0.0f, 0.0f, 0.0f};
+        glClearBufferfv(GL_COLOR, 0, black);
 
-        glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+        glBindVertexArray(va);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        glDisableVertexAttribArray(0);
 
         glXSwapBuffers(display, drawable);
         break;
@@ -211,8 +229,72 @@ int main() {
   }
 
 
+  // Clean up!
   glXDestroyWindow(display, glx_window);
   xcb_destroy_window(connection, window);
   glXDestroyContext(display, gl_context);
   return 0;
+}
+
+
+//
+//  Shader Nonsense
+//
+
+
+static const GLchar *vertex_shader =
+" #version 450 core\n\
+  in vec4 v_position;\
+  void main() {\
+    gl_Position = v_position;\
+  }\
+";
+
+
+static const GLchar *fragment_shader = 
+" #version 450 core\n\
+  out vec4 color;\
+  void main() {\
+    color = vec4(0, 1, 0, 1);\
+  }\
+";
+
+
+static bool compile_shader(GLuint &shader_id, GLenum type, const GLchar* src) {
+  shader_id = glCreateShader(type);
+  glShaderSource(shader_id, 1, &src, NULL);
+  glCompileShader(shader_id);
+
+  GLint success;
+  glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);
+
+  std::fstream log;
+  log.open("log.txt", std::ios::out | std::ios::app);
+  if (log.is_open()) {
+    if (success == GL_TRUE)
+      log << "Successfully compiled shader: " << type << std::endl;
+    else
+      log << "Failed to compile shader: " << type << std::endl;
+
+    log.close();
+  }
+
+  return (success == GL_TRUE);
+}
+
+
+static void create_shader_program(GLuint &program_id) {
+  bool success;
+  
+  GLuint v_shader_id;
+  success = compile_shader(v_shader_id, GL_VERTEX_SHADER, vertex_shader);
+  
+  GLuint f_shader_id;
+  success = compile_shader(f_shader_id, GL_FRAGMENT_SHADER, fragment_shader);
+
+  program_id = glCreateProgram();
+  glAttachShader(program_id, v_shader_id);
+  glAttachShader(program_id, f_shader_id);
+
+  glLinkProgram(program_id);
 }
