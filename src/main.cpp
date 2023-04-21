@@ -1,15 +1,31 @@
+#include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <xcb/xcb.h>
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
+#include <sstream>
+#include <vector>
 
 #include "XWindow.h"
 
 
 static void create_shader_program(GLuint &);
+static void load_verticies_from_obj(const char*, std::vector<float>&, std::vector<unsigned int>&);
+
 
 int main() {
+  std::vector<float> verticies;
+  verticies.reserve(25);
+
+  std::vector<unsigned int> indices;
+  indices.reserve(25);
+
+  load_verticies_from_obj("breh.obj", verticies, indices);
+
+  verticies.shrink_to_fit();
+  indices.shrink_to_fit();
+
   XWindow window;
 
   GLenum err = glewInit();
@@ -18,23 +34,20 @@ int main() {
     exit(1);
   }
 
-
-  // OpenGL Tests
-  const GLfloat positions[3][2] = {
-    {-0.5f, -0.5f},
-    { 0.0f,  0.5f},
-    { 0.5f, -0.5f}
-  };
-
   GLuint vb;
   glCreateBuffers(1, &vb);
-  glNamedBufferStorage(vb, sizeof(positions), positions, 0);
+  glNamedBufferStorage(vb, sizeof(float) * verticies.size(), &verticies[0], 0);
+  glBindBuffer(GL_ARRAY_BUFFER, vb);
+
+  GLuint ib;
+  glCreateBuffers(1, &ib);
+  glNamedBufferStorage(ib,  sizeof(unsigned int) * indices.size(), &indices[0], 0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
 
   GLuint va;
   glGenVertexArrays(1, &va);
   glBindVertexArray(va);
-  glBindBuffer(GL_ARRAY_BUFFER, vb);
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (const void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void*)0);
   glEnableVertexAttribArray(0);
 
   GLuint shader_program_id;
@@ -48,9 +61,10 @@ int main() {
     case XCB_EXPOSE:
       static const float black[] = {0.0f, 0.0f, 0.0f, 0.0f};
       glClearBufferfv(GL_COLOR, 0, black);
-
+      
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
       glBindVertexArray(va);
-      glDrawArrays(GL_TRIANGLES, 0, 3);
+      glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (void*)0);
 
       glXSwapBuffers(window.get_xorg_display_connection(), window.get_glx_drawable());
       break;
@@ -118,4 +132,34 @@ static void create_shader_program(GLuint &program_id) {
   glAttachShader(program_id, f_shader_id);
 
   glLinkProgram(program_id);
+}
+
+static void load_verticies_from_obj(const char *file_name, std::vector<float>& verticies, std::vector<unsigned int>& indices) {
+  std::ifstream file(file_name);
+
+  std::string line;
+  while (std::getline(file, line)) {
+    std::istringstream line_stream(line);
+
+    std::string line_cmd;
+    line_stream >> line_cmd;
+
+    std::string substr;
+    while (getline(line_stream, substr, ' ')) {
+        if (substr.length() == 0)
+          continue;
+
+        if (line_cmd == "v") {
+          float i = std::stof(substr);
+          verticies.push_back(i);
+        } else if (line_cmd == "f") {
+          unsigned int i = (int)substr.at(0) - 48;
+          indices.push_back(i);
+        }
+
+        
+    }
+  }
+
+  file.close();
 }
