@@ -10,6 +10,8 @@
 #include "XWindow.h"
 #include "Shader.h"
 #include "ShaderProgram.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 
 static void load_verticies_from_obj(const char*, std::vector<float>&, std::vector<unsigned int>&);
@@ -17,32 +19,24 @@ static void load_verticies_from_obj(const char*, std::vector<float>&, std::vecto
 int main() {
   std::vector<float> verticies;
   verticies.reserve(25);
-
   std::vector<unsigned int> indices;
   indices.reserve(25);
-
   load_verticies_from_obj("assets/breh.obj", verticies, indices);
-
   verticies.shrink_to_fit();
   indices.shrink_to_fit();
 
   XWindow window;
-
   GLenum err = glewInit();
   if (GLEW_OK != err) {
     std::cout << "glewInit failed!\n";
     exit(1);
   }
 
-  GLuint vb;
-  glCreateBuffers(1, &vb);
-  glNamedBufferStorage(vb, sizeof(float) * verticies.size(), &verticies[0], 0);
-  glBindBuffer(GL_ARRAY_BUFFER, vb);
+  VertexBuffer vertex_buffer(verticies);
+  vertex_buffer.bind();
 
-  GLuint ib;
-  glCreateBuffers(1, &ib);
-  glNamedBufferStorage(ib,  sizeof(unsigned int) * indices.size(), &indices[0], 0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
+  IndexBuffer index_buffer(indices);
+  index_buffer.bind();
 
   GLuint va;
   glGenVertexArrays(1, &va);
@@ -69,7 +63,7 @@ int main() {
       static const float black[] = {0.0f, 0.0f, 0.0f, 0.0f};
       glClearBufferfv(GL_COLOR, 0, black);
       
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
+      index_buffer.bind();
       glBindVertexArray(va);
       glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (void*)0);
 

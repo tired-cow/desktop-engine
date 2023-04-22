@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.26.3)
 
 project(desktop-engine)
 
-add_executable(${PROJECT_NAME} main.cpp XWindow.cpp Shader.cpp ShaderProgram.cpp)
+add_executable(${PROJECT_NAME} main.cpp XWindow.cpp Shader.cpp ShaderProgram.cpp VertexBuffer.cpp IndexBuffer.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC /usr/include/)
 target_link_directories(${PROJECT_NAME} PRIVATE /usr/lib/)
