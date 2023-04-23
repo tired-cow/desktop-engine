@@ -7,11 +7,12 @@
 #include <sstream>
 #include <vector>
 
-#include "XWindow.h"
-#include "Shader.h"
+
 #include "ShaderProgram.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "XWindow.h"
+#include "Shader.h"
 
 
 static void load_verticies_from_obj(const char*, std::vector<float>&, std::vector<unsigned int>&);
@@ -21,7 +22,7 @@ int main() {
   verticies.reserve(25);
   std::vector<unsigned int> indices;
   indices.reserve(25);
-  load_verticies_from_obj("assets/breh.obj", verticies, indices);
+  load_verticies_from_obj("assets/untitled.obj", verticies, indices);
   verticies.shrink_to_fit();
   indices.shrink_to_fit();
 
@@ -44,17 +45,20 @@ int main() {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void*)0);
   glEnableVertexAttribArray(0);
 
-  Shader vert(GL_VERTEX_SHADER, "assets/vertex.shader");
-  vert.compile();
-
-  Shader frag(GL_FRAGMENT_SHADER, "assets/fragment.shader");
-  frag.compile();
 
   ShaderProgram s_program;
+  Shader vert(GL_VERTEX_SHADER, "assets/vertex.shader");
+  vert.compile();
   s_program.set_shader(vert);
+  Shader frag(GL_FRAGMENT_SHADER, "assets/fragment.shader");
+  frag.compile();
   s_program.set_shader(frag);
-
   s_program.use();
+
+  // // Transformation stuff
+  // GLuint loc = s_program.get_uniform_location("transform_mat");
+  // glm::mat4 transform_mat = glm::mat4()
+
 
   xcb_generic_event_t *xcb_event;
   while (xcb_event = xcb_wait_for_event(window.get_xcb_connection())) {

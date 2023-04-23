@@ -9,11 +9,14 @@
 class ShaderProgram {
 private:
   GLuint program_id;
-  // std::unordered_map<GLenum, Shader> attached_shaders;
 
 public:
   ShaderProgram();
   ~ShaderProgram(); 
+  
   void set_shader(Shader);
   void use();
+
+  GLuint get_id();
+  GLuint get_uniform_location(const char *name);
 };

@@ -23,3 +23,11 @@ void ShaderProgram::use() {
   glLinkProgram(program_id);
   glUseProgram(program_id);
 }
+
+GLuint ShaderProgram::get_id() {
+  return program_id;
+}
+
+GLuint ShaderProgram::get_uniform_location(const char* name) {
+  return glGetUniformLocation(program_id, name);
+}
