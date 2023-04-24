@@ -1,16 +1,14 @@
 #pragma once
 
+#include "GLBufferObject.h"
 #include <GL/glew.h>
 #include <vector>
 
-class VertexBuffer {
+class VertexBuffer : public GLBufferObject {
 private:
-  GLuint id;
   std::vector<float> verticies;
 
 public:
   VertexBuffer(std::vector<float>&);
-  ~VertexBuffer();
-
   void bind();
 };

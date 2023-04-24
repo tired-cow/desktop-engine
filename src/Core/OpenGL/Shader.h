@@ -1,12 +1,12 @@
 #pragma once
 
+#include "GLObject.h"
 #include <GL/glew.h>
 #include <iostream>
 #include <fstream>
 
-class Shader {
+class Shader : public GLObject {
 private:
-    GLuint shader_id;
     GLenum shader_type;
 
     std::string shader_src;
@@ -17,6 +17,5 @@ public:
     Shader();
     ~Shader();
     bool compile();
-    GLuint get_shader_id();
     GLenum get_shader_type();
 };

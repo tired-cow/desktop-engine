@@ -1,13 +1,12 @@
 #include "VertexBuffer.h"
+#include "GLBufferObject.h"
+#include <GL/glew.h>
+#include <vector>
 
-VertexBuffer::VertexBuffer(std::vector<float>& verticies) {
+VertexBuffer::VertexBuffer(std::vector<float>& verticies)
+  : GLBufferObject() {
   this->verticies = verticies;
-  glCreateBuffers(1, &id);
   glNamedBufferStorage(id, sizeof(float) * verticies.size(), &verticies[0], 0);
-}
-
-VertexBuffer::~VertexBuffer() {
-  glDeleteBuffers(1, &id);
 }
 
 void VertexBuffer::bind() {

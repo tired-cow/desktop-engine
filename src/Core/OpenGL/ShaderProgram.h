@@ -1,12 +1,9 @@
 #pragma once
 
-#include <unordered_map>
-#include <GL/glew.h>
-#include <fstream>
-
+#include "GLObject.h"
 #include "Shader.h"
 
-class ShaderProgram {
+class ShaderProgram : public GLObject {
 private:
   GLuint program_id;
 
@@ -17,6 +14,5 @@ public:
   void set_shader(Shader);
   void use();
 
-  GLuint get_id();
-  GLuint get_uniform_location(const char *name);
+  unsigned int get_uniform_location(const char *name);
 };

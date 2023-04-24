@@ -8,11 +8,12 @@
 #include <vector>
 
 
-#include "ShaderProgram.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "XWindow.h"
-#include "Shader.h"
+#include "Core/OpenGL/ShaderProgram.h"
+#include "Core/OpenGL/VertexBuffer.h"
+#include "Core/OpenGL/IndexBuffer.h"
+#include "Core/OpenGL/Shader.h"
+#include "Core/XWindow.h"
+
 
 
 static void load_verticies_from_obj(const char*, std::vector<float>&, std::vector<unsigned int>&);
@@ -47,10 +48,10 @@ int main() {
 
 
   ShaderProgram s_program;
-  Shader vert(GL_VERTEX_SHADER, "assets/vertex.shader");
+  Shader vert(GL_VERTEX_SHADER, "assets/vertex.glsl");
   vert.compile();
   s_program.set_shader(vert);
-  Shader frag(GL_FRAGMENT_SHADER, "assets/fragment.shader");
+  Shader frag(GL_FRAGMENT_SHADER, "assets/fragment.glsl");
   frag.compile();
   s_program.set_shader(frag);
   s_program.use();
