@@ -1,0 +1,1 @@
+target_sources(desktop-engine PRIVATE Vector2.hpp Vector3.hpp)

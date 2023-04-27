@@ -28,7 +28,7 @@ int main() {
   verticies.reserve(25);
   std::vector<unsigned int> indices;
   indices.reserve(25);
-  load_verticies_from_obj("assets/test.obj", verticies, indices);
+  load_verticies_from_obj("../assets/test.obj", verticies, indices);
   verticies.shrink_to_fit();
   indices.shrink_to_fit();
 

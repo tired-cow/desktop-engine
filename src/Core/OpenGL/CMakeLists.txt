@@ -1,0 +1,1 @@
+target_sources(desktop-engine PRIVATE GLObject.cpp GLBufferObject.cpp IndexBuffer.cpp Shader.cpp ShaderProgram.cpp VertexArray.cpp VertexBuffer.cpp)

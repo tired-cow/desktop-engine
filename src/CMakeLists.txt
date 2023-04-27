@@ -1,19 +1,28 @@
 cmake_minimum_required(VERSION 3.26.3)
 project(desktop-engine)
 
-add_executable(${PROJECT_NAME} 
-  main.cpp
-  Core/Windowing/XWindow.cpp
-  Core/OpenGL/GLObject.cpp
-  Core/OpenGL/GLBufferObject.cpp
-  Core/OpenGL/IndexBuffer.cpp
-  Core/OpenGL/Shader.cpp
-  Core/OpenGL/ShaderProgram.cpp
-  Core/OpenGL/VertexBuffer.cpp
-  Core/OpenGL/VertexArray.cpp
+set(CORE_DIR ${PROJECT_SOURCE_DIR}/Core/)
+
+
+
+add_executable(${PROJECT_NAME} ;
+  main.cpp;
+  
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC /usr/include/)
-target_link_directories(${PROJECT_NAME} PRIVATE /usr/lib/)
+add_subdirectory(${CORE_DIR}/Engine/)
+add_subdirectory(${CORE_DIR}/Math/)
+add_subdirectory(${CORE_DIR}/OpenGL/)
+add_subdirectory(${CORE_DIR}/Windowing/)
 
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Engine/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Math/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR}/OpenGL/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Windowing/)
+target_include_directories(${PROJECT_NAME} PUBLIC /usr/include/)
+
+
+target_link_directories(${PROJECT_NAME} PRIVATE /usr/lib/)
 target_link_libraries(${PROJECT_NAME} xcb X11 X11-xcb GL GLEW assimp)
