@@ -4,9 +4,6 @@
 #include "Shader.h"
 
 class ShaderProgram : public GLObject {
-private:
-  GLuint program_id;
-
 public:
   ShaderProgram();
   ~ShaderProgram(); 

@@ -3,7 +3,7 @@
 
 ShaderProgram::ShaderProgram()
   : GLObject{glCreateProgram()} {
-  program_id = id;
+
 }
 
 ShaderProgram::~ShaderProgram() {
@@ -12,7 +12,7 @@ ShaderProgram::~ShaderProgram() {
 
 void ShaderProgram::set_shader(Shader shader) {
   GLuint shader_id = shader.get_id();
-  glAttachShader(program_id, shader_id);
+  glAttachShader(id, shader_id);
 }
 
 void ShaderProgram::use() {
