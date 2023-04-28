@@ -4,10 +4,9 @@
 #include "Math/Vector3.hpp"
 
 class TransformComponent : public Component {
-protected:
+public:
   Vector3 position;
   Vector3 rotation;
 
-public:
   TransformComponent(Object*);
 };

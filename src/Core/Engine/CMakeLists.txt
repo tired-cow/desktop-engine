@@ -1,1 +1,1 @@
-target_sources(desktop-engine PRIVATE Object.cpp Component.cpp TransformComponent.cpp)
+target_sources(desktop-engine PRIVATE Object.cpp Component.cpp TransformComponent.cpp MeshComponent.cpp)

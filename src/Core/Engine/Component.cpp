@@ -6,5 +6,5 @@ Component::Component(Object *owner)
 }
 
 Component::~Component() {
-  delete owner;
+  
 }

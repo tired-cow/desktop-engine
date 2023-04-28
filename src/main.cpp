@@ -46,10 +46,10 @@ int main() {
   
 
   ShaderProgram s_program;
-  Shader vert(GL_VERTEX_SHADER, "assets/vertex.glsl");
+  Shader vert(GL_VERTEX_SHADER, "../assets/vertex.glsl");
   vert.compile();
   s_program.set_shader(vert);
-  Shader frag(GL_FRAGMENT_SHADER, "assets/fragment.glsl");
+  Shader frag(GL_FRAGMENT_SHADER, "../assets/fragment.glsl");
   frag.compile();
   s_program.set_shader(frag);
   s_program.use();
