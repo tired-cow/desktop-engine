@@ -12,3 +12,7 @@ VertexBuffer::VertexBuffer(std::vector<float>& verticies)
 void VertexBuffer::bind() {
   glBindBuffer(GL_ARRAY_BUFFER, id);
 }
+
+void VertexBuffer::unbind() {
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+}

@@ -12,3 +12,7 @@ IndexBuffer::IndexBuffer(std::vector<unsigned int> &indices)
 void IndexBuffer::bind() {
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
 }
+
+void IndexBuffer::unbind() {
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}

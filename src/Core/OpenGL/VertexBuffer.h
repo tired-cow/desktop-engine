@@ -10,5 +10,7 @@ private:
 
 public:
   VertexBuffer(std::vector<float>&);
+  void buffer_data();
   void bind();
+  void unbind();
 };

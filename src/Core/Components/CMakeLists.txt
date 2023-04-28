@@ -1,0 +1,1 @@
+target_sources(desktop-engine PRIVATE Component.cpp TransformComponent.cpp ModelComponent.cpp)

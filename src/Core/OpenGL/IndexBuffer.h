@@ -11,4 +11,5 @@ private:
 public:
   IndexBuffer(std::vector<unsigned int>&);
   void bind();
+  void unbind();
 };

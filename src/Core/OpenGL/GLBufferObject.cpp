@@ -14,3 +14,11 @@ GLBufferObject::~GLBufferObject() {
 void GLBufferObject::bind() {
 
 }
+
+void GLBufferObject::unbind() {
+  
+}
+
+void GLObject::buffer_data() {
+  
+}

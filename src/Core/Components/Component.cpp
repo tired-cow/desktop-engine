@@ -1,5 +1,5 @@
 #include "Component.h"
-#include "Object.h"
+#include "Engine/Object.h"
 
 Component::Component(Object *owner)
   : owner{owner} {

@@ -1,5 +1,5 @@
 #include "TransformComponent.h"
-#include "Object.h"
+#include "Engine/Object.h"
 
 TransformComponent::TransformComponent(Object *owner) 
   : Component(owner) {
