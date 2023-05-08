@@ -1,25 +1,27 @@
 cmake_minimum_required(VERSION 3.26.3)
 project(desktop-engine)
 
-set(CORE_DIR ${PROJECT_SOURCE_DIR}/Core/)
-
 add_executable(${PROJECT_NAME} main.cpp)
 
-add_subdirectory(${CORE_DIR}/Engine/)
-add_subdirectory(${CORE_DIR}/Components/)
-add_subdirectory(${CORE_DIR}/Math/)
-add_subdirectory(${CORE_DIR}/OpenGL/)
-add_subdirectory(${CORE_DIR}/Windowing/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Events/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Windowing/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Windowing/X11/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Loaders/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Renderer/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Renderer/GL/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/World/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Math/)
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Events/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Windowing/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Windowing/X11/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Loaders/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Renderer/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Renderer/GL/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/World/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Math/)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Components/)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Engine/)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Math/)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR}/OpenGL/)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CORE_DIR}/Windowing/)
 target_include_directories(${PROJECT_NAME} PUBLIC /usr/include/)
-
-
 target_link_directories(${PROJECT_NAME} PRIVATE /usr/lib/)
-target_link_libraries(${PROJECT_NAME} xcb X11 X11-xcb GL GLEW assimp)
+target_link_libraries(${PROJECT_NAME} X11 GL GLEW assimp)

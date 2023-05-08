@@ -1,0 +1,1 @@
+target_sources(desktop-engine PRIVATE Node.cpp WorldObject.cpp WorldCamera.cpp)

@@ -1,0 +1,1 @@
+target_sources( desktop-engine PRIVATE  GLXGraphicsStrategy.cpp IXGraphicsStrategy.h XWindowingStrategy.cpp )

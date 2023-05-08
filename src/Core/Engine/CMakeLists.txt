@@ -1,1 +1,0 @@
-target_sources(desktop-engine PRIVATE Object.cpp Mesh.cpp)
