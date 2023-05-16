@@ -8,22 +8,22 @@ GLShaderProgram::GLShaderProgram()
 
 GLShaderProgram::~GLShaderProgram() 
 {
-	glDeleteProgram(id);
+	glDeleteProgram(m_Id);
 }
 
 void GLShaderProgram::SetShader(const GLShader &shader) 
 {
 	unsigned int shaderId = shader.GetId();
-	glAttachShader(id, shaderId);
+	glAttachShader(m_Id, shaderId);
 }
 
-void GLShaderProgram::Use() 
+void GLShaderProgram::Use() const 
 {
-	glLinkProgram(id);
-	glUseProgram(id);
+	glLinkProgram(m_Id);
+	glUseProgram(m_Id);
 }
 
-unsigned int GLShaderProgram::GetUniformLocation(const char* name) 
+unsigned int GLShaderProgram::GetUniformLocation(const char* name) const
 {
-	return glGetUniformLocation(id, name);
+	return glGetUniformLocation(m_Id, name);
 }

@@ -6,7 +6,7 @@
 class IListener
 {
 public:
-	virtual void OnUpdate( const Event& ) = 0;
+	virtual void OnUpdate(Event&) = 0;
 };
 
 #endif

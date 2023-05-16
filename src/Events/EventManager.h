@@ -3,19 +3,36 @@
 
 #include "IListener.h"
 #include "Event.h"
+#include <iostream>
+#include <string>
 #include <unordered_map>
 #include <queue>
 
 class EventManager
 {
 public:
-	
-	void AddListner( IListener*, Event::EventType );
-	void RemoveListener( IListener* );
-	void NotifyListeners( Event* );
+	static EventManager& GetInstance();
+	void RegisterEvent(const std::string&);
+	void RemoveEvent(const std::string&);
+	void SubscribeToEvent(const std::string&, IListener*);
+	void UnsubscribeToEvent(const std::string&, IListener*);
+	void NotifyListeners(Event&);
 
-protected:
-	std::unordered_map<IListener*, Event::EventType> m_Listeners;
+public:
+	EventManager(const EventManager&) = delete;
+
+private:
+	static EventManager m_Instance;
+	std::unordered_map<std::string, std::vector<IListener*>> m_EventMap;
+	std::queue<Event*> m_EventQueue;
+
+private:
+	EventManager() = default;
+
+private:
+	bool HasEvent(const Event &);
+	bool HasEvent(const std::string &);
+
 };
 
 #endif

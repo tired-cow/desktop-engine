@@ -1,65 +1,65 @@
 #include "GLRenderer.h"
 
-GLRenderer::GLRenderer()
-	: IRenderer()
+void GLRenderer::Render()
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-}
-
-void GLRenderer::Render(const Mesh &mesh)
-{
-	if (m_WorldCamera == nullptr)
-		throw "World camera not set!";
+	for (const auto &keyValue : m_RendererDataMap)
+	{
+		const Mesh &mesh = *(keyValue.first);
+		const GLVertexArray &va = keyValue.second.m_VertexArray;
+		va.Bind();
+		glDrawElements(GL_TRIANGLES, mesh.GetIndices().size(), GL_UNSIGNED_INT, (void*)0);
+	}
 	
-	unsigned int projMatId = m_ShaderProgram.GetUniformLocation("projection");
-	glm::mat4 projMat = glm::mat4(1.0f);
-	projMat = glm::perspective(m_WorldCamera->m_FOV, m_WorldCamera->m_AspectRatio, m_WorldCamera->m_NearPlane, m_WorldCamera->m_FarPlane);
-	glUniformMatrix4fv(projMatId, 1, GL_FALSE, glm::value_ptr(projMat));
-
-	unsigned int modelMatId = m_ShaderProgram.GetUniformLocation("model");
-	glm::mat4 modelMat = glm::mat4(1.0f);
-	modelMat = glm::translate(modelMat, glm::vec3(0, 0, -15.5f));
-	glUniformMatrix4fv(modelMatId, 1, GL_FALSE, glm::value_ptr(modelMat));
-
-	GLVertexBuffer vBuff(mesh.GetVertices());
-	GLIndexBuffer iBuff(mesh.GetIndices());
-	GLVertexArray vArr;
-
-	vArr.Bind();
-	vArr.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void*)0);
-
-	vBuff.Bind();
-	iBuff.Bind();
-
-	static const float black[] = {0.0f, 0.0f, 0.0f, 0.0f};
-	glClearBufferfv(GL_COLOR, 0, black);
-
-	glDrawElements(GL_TRIANGLES, mesh.GetIndices().size(), GL_UNSIGNED_INT, (void*)0);
+	
 }
 
-void GLRenderer::SetShaderProgram()
+void GLRenderer::AddToRenderList(const Mesh &mesh)
 {
+	// Setup default Shader
 	AssetLoader &assetLoader = AssetLoader::GetInstance();
 
-	std::string vShaderSrc = assetLoader.LoadShaderFromFile("vertex.glsl");
+	std::string vShaderSrc = assetLoader.LoadShaderFromFile("assets/vertex.glsl");
 	GLShader vertexShader(GL_VERTEX_SHADER);
 	vertexShader.SourceShader(vShaderSrc);
-	
 	bool success = vertexShader.Compile();
 	if (!success)
-		throw "Vertex Shader failed to compile!";
+	{
+		std::cout << "Vertex Shader failed to compile!\n";
+		exit(1);
+	}
 
-	std::string fShaderSrc = assetLoader.LoadShaderFromFile("fragment.glsl");
+	std::string fShaderSrc = assetLoader.LoadShaderFromFile("assets/fragment.glsl");
 	GLShader fragmentShader(GL_FRAGMENT_SHADER);
 	fragmentShader.SourceShader(fShaderSrc);
-
 	success = fragmentShader.Compile();
 	if (!success)
-		throw "Fragment Shader failed to compile!";
+	{
+		std::cout << "Fragment Shader failed to compile!\n";
+		exit(1);
+	}
 
-	
-	m_ShaderProgram.SetShader(vertexShader);
-	m_ShaderProgram.SetShader(fragmentShader);
+	GLShaderProgram shaderProgram;
+	shaderProgram.SetShader(vertexShader);
+	shaderProgram.SetShader(fragmentShader);
+	//
 
-	m_ShaderProgram.Use();
+	AddToRenderList(mesh, shaderProgram);
+}
+
+void GLRenderer::AddToRenderList(const Mesh &mesh, const GLShaderProgram &shaderProgram)
+{
+	m_RendererDataMap[&mesh];
+	GLRendererRenderData& data = m_RendererDataMap[&mesh];
+
+	data.m_VertexArray.Bind();
+
+	data.m_VertexBuffer.BufferData(mesh.GetVertices());
+	data.m_VertexBuffer.Bind();
+
+	data.m_IndexBuffer.BufferData(mesh.GetIndices());
+	data.m_IndexBuffer.Bind();
+
+	data.m_VertexArray.AddVertexAttribute(3, GL_FLOAT);
 }

@@ -1,7 +1,7 @@
 #include "GLShader.h"
 
-GLShader::GLShader(GLenum type) 
-	: GLObject(glCreateShader(type)), m_ShaderType{type} 
+GLShader::GLShader(unsigned int GLType) 
+	: GLObject(glCreateShader(GLType)), m_ShaderType{GLType}, m_Compiled{false}
 {
 	
 }
@@ -9,22 +9,25 @@ GLShader::GLShader(GLenum type)
 
 GLShader::~GLShader()
 {
-  glDeleteShader(id);
+	glDeleteShader(m_Id);
 }
 
 
-bool GLShader::Compile() {
-	glCompileShader(id);
+bool GLShader::Compile() 
+{
+	glCompileShader(m_Id);
 
-	GLint success;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &success);
+	int success;
+	glGetShaderiv(m_Id, GL_COMPILE_STATUS, &success);
 	if (success == GL_FALSE)
-		throw "Shader failed to compile!";
+		m_Compiled = false;
+	else
+		m_Compiled = true;
 
 	return (success == GL_TRUE);
 }
 
-GLenum GLShader::GetShaderType() 
+GLenum GLShader::GetShaderType() const
 {
 	return m_ShaderType;
 }
@@ -32,7 +35,10 @@ GLenum GLShader::GetShaderType()
 void GLShader::SourceShader(const std::string &source)
 {
 	m_ShaderSrc = source.c_str();
-	
-	//const char* temp = m_ShaderSrc.c_str();
-	glShaderSource(id, 1, &m_ShaderSrc, NULL);
+	glShaderSource(m_Id, 1, &m_ShaderSrc, NULL);
+}
+
+bool GLShader::IsCompiled() const
+{
+	return m_Compiled;
 }

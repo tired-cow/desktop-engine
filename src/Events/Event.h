@@ -1,24 +1,22 @@
 #ifndef _EVENT_H_
 #define _EVENT_H_
 
+#include <string>
+#include <memory>
+
 class Event
 {
 public:
-	enum EventType
-	{
-		NonEvent = 0,
-		KeyPressed = 2, KeyReleased = 4
-	};
+	const std::string& GetId() const;
+	std::shared_ptr<void> GetParamters();
 
-	[[nodiscard]] const bool IsProcessed( ) const;
-	[[nodiscard]] const int GetEventMask( ) const;
-
-	Event( EventType );
-	void Process( );
+public:
+	Event(const std::string&, std::shared_ptr<void>);
 
 protected:
-	bool m_Processed;
-	int m_EventMask;
+	std::string m_Id;
+	std::shared_ptr<void> m_Parameters;
+
 };
 
 #endif

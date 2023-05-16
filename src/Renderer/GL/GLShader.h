@@ -9,15 +9,23 @@
 class GLShader : public GLObject 
 {
 public:
-    GLShader(GLenum);
-    ~GLShader();
-    bool Compile();
-    GLenum GetShaderType();
+	bool Compile();
 	void SourceShader(const std::string&);
 
+	bool IsCompiled() const;
+	unsigned int GetShaderType() const;
+	
+
+public:
+	GLShader(unsigned int);
+	~GLShader();
+	GLShader(const GLShader &) = delete;
+	GLShader &operator=(const GLShader &) = delete;
+
 protected:
-    GLenum m_ShaderType;
-    const char *m_ShaderSrc;
+	unsigned int m_ShaderType;
+	const char *m_ShaderSrc;
+	bool m_Compiled;
 };
 
 #endif

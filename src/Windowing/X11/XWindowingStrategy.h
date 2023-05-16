@@ -4,6 +4,7 @@
 #include "IWindowingStrategy.h"
 #include "GLXGraphicsStrategy.h"
 #include "Events/Event.h"
+
 #include <memory>
 #include <X11/X.h>
 #include <X11/Xlib.h>
@@ -14,13 +15,13 @@
 class XWindowingStrategy : public IWindowingStrategy
 {
 public:
-	void CreateWindow( const unsigned int& x, const unsigned int& y, 
+	void CreateWindow(const unsigned int& x, const unsigned int& y, 
 		const unsigned int& width, const unsigned int& height, 
-		IWindowingStrategy::WindowType const& type ) override;
+		IWindowingStrategy::WindowType const& type) override;
 	
-	Event* GetNextEvent( ) override;
+	Event GetNextEvent() override;
 
-	void SwapBuffers( );
+	void SwapBuffers();
 
 protected:
 	std::unique_ptr<IXGraphicsStrategy> m_GraphicsStrat;

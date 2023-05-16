@@ -1,22 +1,17 @@
 #include "Event.h"
 
-Event::Event( EventType mask )
-	: m_Processed{ false }, m_EventMask{ NonEvent }
+
+const std::string& Event::GetId() const
 {
-	m_EventMask &= mask;
+	return m_Id;
 }
 
-const bool Event::IsProcessed() const
+std::shared_ptr<void> Event::GetParamters()
 {
-	return m_Processed;
+	return m_Parameters;
 }
 
-const int Event::GetEventMask() const
+Event::Event(const std::string &string, std::shared_ptr<void> params)
+	: m_Id{string}, m_Parameters{params}
 {
-	return m_EventMask;
-}
-
-void Event::Process()
-{
-	m_Processed = true;
 }

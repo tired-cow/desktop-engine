@@ -7,12 +7,15 @@
 class GLBufferObject : public GLObject 
 {
 public:
+	virtual void Bind() const = 0;
+	virtual void Unbind() const = 0;
+	void BufferData();
+
+public:
 	GLBufferObject();
 	~GLBufferObject();
-
-protected:
-	virtual void Bind() = 0;
-	virtual void Unbind() = 0;
+	GLBufferObject(const GLBufferObject &) = delete;
+	GLBufferObject &operator=(const GLBufferObject &) = delete;
 };
 
 #endif 

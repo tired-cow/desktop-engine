@@ -6,11 +6,14 @@
 
 class GLShaderProgram : public GLObject {
 public:
-  GLShaderProgram();
-  ~GLShaderProgram(); 
-  
-  void SetShader(const GLShader&);
-  void Use();
+	void SetShader(const GLShader&);
 
-  unsigned int GetUniformLocation(const char *name);
+	void Use() const;
+	unsigned int GetUniformLocation(const char *name) const;
+
+public:
+	GLShaderProgram();
+	~GLShaderProgram(); 
+	GLShaderProgram(const GLShaderProgram &) = delete;
+	GLShaderProgram &operator=(const GLShaderProgram &) = delete;
 };

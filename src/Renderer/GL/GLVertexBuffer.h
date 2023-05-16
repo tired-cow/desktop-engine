@@ -8,13 +8,16 @@
 class GLVertexBuffer: public GLBufferObject 
 {
 public:
+	void BufferData(const std::vector<float>&);
+	void Bind() const override;
+	void Unbind() const override;
+
+public:
+	GLVertexBuffer() = default;
 	GLVertexBuffer(const std::vector<float>&);
-	void Bind() override;
-	void Unbind() override;
-
-private:
-	std::vector<float> m_Verticies;
-
+	GLVertexBuffer(const GLVertexBuffer &) = delete;
+	GLVertexBuffer &operator=(const GLVertexBuffer &) = delete;
+	
 };
 
 #endif

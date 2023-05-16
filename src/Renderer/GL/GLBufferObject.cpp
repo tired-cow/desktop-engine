@@ -3,10 +3,14 @@
 GLBufferObject::GLBufferObject()
 	: GLObject() 
 {
-	glCreateBuffers(1, &id);
+	glCreateBuffers(1, &m_Id);
 }
 
 GLBufferObject::~GLBufferObject()
 {
-	glDeleteBuffers(1, &id);
+	glDeleteBuffers(1, &m_Id);
+}
+
+void GLBufferObject::BufferData()
+{
 }

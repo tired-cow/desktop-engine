@@ -7,7 +7,7 @@ AssetLoader &AssetLoader::GetInstance()
 	return m_Instance;
 }
 
-Mesh* AssetLoader::LoadVerticesFromFile(const std::string &filePath) const
+Mesh AssetLoader::LoadVerticesFromFile(const std::string &filePath) const
 {
 	Assimp::Importer importer;
 
@@ -25,15 +25,19 @@ Mesh* AssetLoader::LoadVerticesFromFile(const std::string &filePath) const
 
 	unsigned int nMeshes = scene->mNumMeshes;
   	if (nMeshes <= 0)
-		throw "No meshes found!";
-	
+	{
+		std::cout << "No meshes found!";
+		exit(1);
+	}
+
 	std::vector<float> vertices;
 	std::vector<unsigned int> indices;
+	std::vector<float> normals;
 
 	for (unsigned int i = 0; i < nMeshes; i++)
 	{
 		aiMesh *mesh = scene->mMeshes[i];
-		vertices.reserve(mesh->mNumVertices * 3);
+
 		for (unsigned int j = 0; j < mesh->mNumVertices; j++)
 		{
 			aiVector3D vertex = mesh->mVertices[j];
@@ -48,15 +52,23 @@ Mesh* AssetLoader::LoadVerticesFromFile(const std::string &filePath) const
 		for (unsigned int j = 0; j < mesh->mNumFaces; j++)
 		{
 			aiFace face = mesh->mFaces[j];
-			if (face.mNumIndices > 3)
-				throw "Uhh more than 3 indices, can't render that!";
-
 			for (unsigned int k = 0; k < face.mNumIndices; k++)
 				indices.push_back(face.mIndices[k]);
 		}
+
+		if (!(mesh->HasNormals()))
+			break;
+
+		for (unsigned j = 0; j < mesh->mNumFaces; j++)
+		{
+			aiVector3D normal = mesh->mNormals[j];
+			normals.push_back(normal.x);
+			normals.push_back(normal.y);
+			normals.push_back(normal.z);
+		}
 	}
 	
-	return new Mesh(vertices, indices);
+	return Mesh(vertices, indices, normals);
 }
 
 std::string const AssetLoader::LoadShaderFromFile(const std::string &path) const

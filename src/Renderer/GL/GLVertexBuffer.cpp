@@ -1,18 +1,23 @@
 #include "GLVertexBuffer.h"
 
-GLVertexBuffer::GLVertexBuffer(const std::vector<float>& verticies)
+GLVertexBuffer::GLVertexBuffer(const std::vector<float>& vertices)
 	: GLBufferObject() 
 {
-	//m_Verticies = verticies;
-	glNamedBufferStorage(id, sizeof(float) * verticies.size(), &verticies[0], 0);
+	BufferData(vertices);
 }
 
-void GLVertexBuffer::Bind()
+void GLVertexBuffer::BufferData(const std::vector<float> &vertices)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, id);
+	Bind();	
+	glNamedBufferStorage(m_Id, sizeof(float) * vertices.size(), &vertices[0], 0);
 }
 
-void GLVertexBuffer::Unbind()
+void GLVertexBuffer::Bind() const
+{
+	glBindBuffer(GL_ARRAY_BUFFER, m_Id);
+}
+
+void GLVertexBuffer::Unbind() const
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

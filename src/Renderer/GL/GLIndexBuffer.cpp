@@ -3,16 +3,21 @@
 GLIndexBuffer::GLIndexBuffer(const std::vector<unsigned int> &indices) 
 	: GLBufferObject() 
 {
-	//this->indices = indices;
-	glNamedBufferStorage(id, sizeof(unsigned int) * indices.size(), &indices[0], 0);
+	BufferData(indices);
 }
 
-void GLIndexBuffer::Bind() 
+void GLIndexBuffer::BufferData(const std::vector<unsigned int> &indices)
 {
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+	Bind();
+	glNamedBufferStorage(m_Id, sizeof(unsigned int) * indices.size(), &indices[0], 0);
 }
 
-void GLIndexBuffer::Unbind() 
+void GLIndexBuffer::Bind() const
+{
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Id);
+}
+
+void GLIndexBuffer::Unbind() const
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

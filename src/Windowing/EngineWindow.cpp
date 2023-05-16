@@ -1,8 +1,12 @@
 #include "EngineWindow.h"
 
 EngineWindow::EngineWindow( ) 
+	: m_EventManager{EventManager::GetInstance()}
 {
 	m_WindowingStrategy = std::make_unique<XWindowingStrategy>();
+	m_EventManager.RegisterEvent("MouseMoved");
+	m_EventManager.RegisterEvent("Expose");
+	m_EventManager.RegisterEvent("KeyPressed");
 }
 
 void EngineWindow::SetStrategy( IWindowingStrategy *strategy )
@@ -16,19 +20,20 @@ void EngineWindow::SetStrategy( IWindowingStrategy *strategy )
 	m_WindowingStrategy = std::unique_ptr<IWindowingStrategy>( strategy );
 }
 
-void EngineWindow::Initialize( const unsigned int& x, const unsigned int& y, 
+void EngineWindow::Initialize(const unsigned int& x, const unsigned int& y, 
 		const unsigned int& width, const unsigned int& height, 
-		IWindowingStrategy::WindowType const& type )
+		IWindowingStrategy::WindowType const& type)
 {
-	m_WindowingStrategy->CreateWindow( x, y, width, height, type );
+	m_WindowingStrategy->CreateWindow(x, y, width, height, type);
 }
 
-void EngineWindow::SwapBuffers( )
+void EngineWindow::SwapBuffers()
 {
-	m_WindowingStrategy->SwapBuffers( );
+	m_WindowingStrategy->SwapBuffers();
 }
 
-const Event& EngineWindow::GetNextEvent( )
+void EngineWindow::CheckNextEvent()
 {
-	return *(m_WindowingStrategy->GetNextEvent());
+	Event event = m_WindowingStrategy->GetNextEvent();
+	m_EventManager.NotifyListeners(event);
 }

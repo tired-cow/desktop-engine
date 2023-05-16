@@ -4,12 +4,14 @@
 class GLObject 
 {
 public:
-	GLObject(unsigned int);
-	GLObject();
 	const unsigned int GetId() const;
 
+public:
+	GLObject(unsigned int);
+	GLObject();
+
 protected:
-	unsigned int id;
+	unsigned int m_Id;
 };
 
 #endif

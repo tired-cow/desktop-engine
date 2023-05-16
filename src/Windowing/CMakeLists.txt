@@ -1,1 +1,1 @@
-target_sources( desktop-engine PRIVATE EngineWindow.cpp IWindowingStrategy.h )
+target_sources( desktop-engine PRIVATE EngineWindow.cpp IWindowingStrategy.h)

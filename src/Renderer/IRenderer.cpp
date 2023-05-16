@@ -5,6 +5,11 @@ IRenderer::IRenderer()
 {
 }
 
+void IRenderer::AddToRenderList(const Mesh &mesh)
+{
+	m_RenderList.push_back(&mesh);
+}
+
 void IRenderer::SetWorldCamera(WorldCamera *const camera)
 {
 	m_WorldCamera = camera;

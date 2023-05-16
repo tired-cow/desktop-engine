@@ -8,12 +8,15 @@
 class GLIndexBuffer : public GLBufferObject 
 {
 public:
-	GLIndexBuffer(const std::vector<unsigned int>&);
-	void Bind() override;
-	void Unbind() override;
+	void BufferData(const std::vector<unsigned int>&);
+	void Bind() const override;
+	void Unbind() const override;
 
-private:
-	std::vector<unsigned int> indices;
+public:
+	GLIndexBuffer() = default;
+	GLIndexBuffer(const std::vector<unsigned int>&);
+	GLIndexBuffer(const GLIndexBuffer &) = delete;
+	GLIndexBuffer &operator=(const GLIndexBuffer &) = delete;
 };
 
 #endif

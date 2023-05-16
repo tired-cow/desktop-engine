@@ -2,6 +2,7 @@
 #define _RENDERER_H_
 
 #include <vector>
+#include <unordered_map>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -9,6 +10,7 @@
 
 #include "Loaders/AssetLoader.h"
 #include "Renderer/IRenderer.h"
+#include "Renderer/Mesh.h"
 
 #include "GLVertexBuffer.h"
 #include "GLVertexArray.h"
@@ -19,12 +21,25 @@
 class GLRenderer : public IRenderer
 {
 public:
-	GLRenderer();
-	void Render(const Mesh&) override;
-	void SetShaderProgram();
+	struct GLRendererRenderData
+	{
+		GLVertexArray m_VertexArray;
+		GLIndexBuffer m_IndexBuffer;
+		GLVertexBuffer m_VertexBuffer;
+		GLShaderProgram m_ShaderProgram;
+	};
+
+public:
+	void Render();
+	void AddToRenderList(const Mesh&) override;
+	void AddToRenderList(const Mesh&, const GLShaderProgram&);
 
 protected:
-	GLShaderProgram m_ShaderProgram;
+	//void SetupDefaultShader();
+
+protected:
+	std::unordered_map<const Mesh *, GLRendererRenderData>  m_RendererDataMap;
+	//GLShaderProgram m_DefaultProgram;
 };
 
 #endif
