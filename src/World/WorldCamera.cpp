@@ -1,10 +1,6 @@
 #include "WorldCamera.h"
 
-WorldCamera::WorldCamera()
+WorldCamera::WorldCamera(float FOV, float AspectRatio, float NearPlane, float FarPlane)
+	: m_FOV{FOV}, m_AspectRatio{AspectRatio}, m_NearPlane{NearPlane}, m_FarPlane{FarPlane}
 {
-	m_AspectRatio = (float)1920/1080;
-	m_FOV = 30;
-	m_NearPlane = .1f;
-	m_FarPlane = 100.0f;
-
 }

@@ -5,7 +5,7 @@ EngineWindow::EngineWindow( )
 {
 	m_WindowingStrategy = std::make_unique<XWindowingStrategy>();
 	m_EventManager.RegisterEvent("MouseMoved");
-	m_EventManager.RegisterEvent("Expose");
+	// m_EventManager.RegisterEvent("Expose");
 	m_EventManager.RegisterEvent("KeyPressed");
 }
 
@@ -35,5 +35,6 @@ void EngineWindow::SwapBuffers()
 void EngineWindow::CheckNextEvent()
 {
 	Event event = m_WindowingStrategy->GetNextEvent();
-	m_EventManager.NotifyListeners(event);
+	if (event.GetParamters() != nullptr)
+		m_EventManager.NotifyListeners(event);
 }

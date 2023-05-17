@@ -11,8 +11,6 @@ void GLRenderer::Render()
 		va.Bind();
 		glDrawElements(GL_TRIANGLES, mesh.GetIndices().size(), GL_UNSIGNED_INT, (void*)0);
 	}
-	
-	
 }
 
 void GLRenderer::AddToRenderList(const Mesh &mesh)
@@ -62,4 +60,8 @@ void GLRenderer::AddToRenderList(const Mesh &mesh, const GLShaderProgram &shader
 	data.m_IndexBuffer.Bind();
 
 	data.m_VertexArray.AddVertexAttribute(3, GL_FLOAT);
+}
+
+GLRenderer::GLRenderer()
+{
 }

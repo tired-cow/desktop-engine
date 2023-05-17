@@ -8,8 +8,6 @@
 class WorldObject : public Node
 {
 public:
-	WorldObject();
-
 	Vector3 m_Position;
 	Vector3 m_Rotation;
 };

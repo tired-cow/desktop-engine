@@ -36,31 +36,34 @@ void XWindowingStrategy::CreateWindow( const unsigned int& x, const unsigned int
 
 	XMapWindow(m_Display, m_Window);
 	m_GraphicsStrat->Setup();
-	XFlush(m_Display);
+
 }
 
 Event XWindowingStrategy::GetNextEvent()
 {
-	XEvent event;
-	XNextEvent(m_Display, &event);
-
-	switch(event.type)
+	if (XPending(m_Display))
 	{
-		case KeyPress:
+		XEvent event;
+		XNextEvent(m_Display, &event);
+		switch(event.type)
 		{
-			std::shared_ptr<unsigned int> data = std::make_shared<unsigned int>(event.xkey.keycode);
-			return Event("KeyPressed", data);
+			case KeyPress:
+			{
+				std::shared_ptr<unsigned int> data = std::make_shared<unsigned int>(event.xkey.keycode);
+				return Event("KeyPressed", data);
+			}
+			case MotionNotify:
+			{
+				std::vector<int> t {event.xmotion.x, event.xmotion.y};
+				std::shared_ptr< std::vector<int> > data = std::make_shared< std::vector<int> >(t);
+				return Event("MouseMoved", data);
+			}
+			default:
+				break;
 		}
-		case MotionNotify:
-		{
-			std::vector<int> t {event.xmotion.x, event.xmotion.y};
-			std::cout << event.xmotion.x << " " << event.xmotion.y << std::endl;
-			std::shared_ptr< std::vector<int> > data = std::make_shared< std::vector<int> >(t);
-			return Event("MouseMoved", data);
-		}
-		default:
-			return Event("None", nullptr);
 	}
+
+	return Event("None", nullptr);
 }
 
 void XWindowingStrategy::SwapBuffers()

@@ -17,6 +17,8 @@ public:
 	void SubscribeToEvent(const std::string&, IListener*);
 	void UnsubscribeToEvent(const std::string&, IListener*);
 	void NotifyListeners(Event&);
+	bool HasEvent(const Event &) const;
+	bool HasEvent(const std::string &) const;
 
 public:
 	EventManager(const EventManager&) = delete;
@@ -28,11 +30,7 @@ private:
 
 private:
 	EventManager() = default;
-
-private:
-	bool HasEvent(const Event &);
-	bool HasEvent(const std::string &);
-
+	
 };
 
 #endif

@@ -20,7 +20,6 @@ public:
 		IWindowingStrategy::WindowType const& type) override;
 	
 	Event GetNextEvent() override;
-
 	void SwapBuffers();
 
 protected:
@@ -29,6 +28,7 @@ protected:
 	Display 	*m_Display;
 	XVisualInfo *m_VisualInfo;
 	Window   	 m_Window;
+	long		 m_EventMask;
 };
 
 #endif

@@ -17,7 +17,7 @@ void EventManager::RemoveEvent(const std::string &eventName)
 {
 	if (HasEvent(eventName) == false)
 	{
-		std::cout << "Could not remove event " << eventName << std::endl;
+		//std::cout << "Could not remove event " << eventName << std::endl;
 		return;
 	}
 
@@ -28,7 +28,7 @@ void EventManager::SubscribeToEvent(const std::string &eventName, IListener *lis
 {
 	if (HasEvent(eventName) == false) 
 	{
-		std::cout << "There is no event " << eventName << " to add a listener to.\n";
+		//std::cout << "There is no event " << eventName << " to add a listener to.\n";
 		return;
 	}
 
@@ -39,7 +39,7 @@ void EventManager::UnsubscribeToEvent(const std::string &eventName, IListener *l
 {
 	if (HasEvent(eventName) == false)
 	{
-		std::cout << "There is no event " << eventName << " to remove a listener from.\n";
+		//std::cout << "There is no event " << eventName << " to remove a listener from.\n";
 		return;
 	}
 
@@ -53,7 +53,7 @@ void EventManager::NotifyListeners(Event &event)
 {
 	if (HasEvent(event) == false)
 	{
-		std::cout << "There is no event " << event.GetId() << " notify listeners of.\n";
+		//std::cout << "There is no event " << event.GetId() << " notify listeners of.\n";
 		return;
 	}
 
@@ -61,12 +61,12 @@ void EventManager::NotifyListeners(Event &event)
 		listener->OnUpdate(event);
 }
 
-bool EventManager::HasEvent(const Event &event)
+bool EventManager::HasEvent(const Event &event) const
 {
 	return HasEvent(event.GetId());
 }
 
-bool EventManager::HasEvent(const std::string &id)
+bool EventManager::HasEvent(const std::string &id) const
 {
 	return !(m_EventMap.find(id) == m_EventMap.end());
 }

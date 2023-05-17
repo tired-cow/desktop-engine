@@ -34,12 +34,15 @@ public:
 	void AddToRenderList(const Mesh&) override;
 	void AddToRenderList(const Mesh&, const GLShaderProgram&);
 
+public:
+	GLRenderer();
+
 protected:
 	//void SetupDefaultShader();
 
 protected:
 	std::unordered_map<const Mesh *, GLRendererRenderData>  m_RendererDataMap;
-	//GLShaderProgram m_DefaultProgram;
+	GLShaderProgram m_DefaultProgram;
 };
 
 #endif
