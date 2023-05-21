@@ -28,19 +28,15 @@ public:
 		GLVertexArray m_VertexArray;
 		GLIndexBuffer m_IndexBuffer;
 		GLVertexBuffer m_VertexBuffer;
-		// const GLShaderProgram *m_ShaderProgram;
 		const GLMeshShader *m_MeshShader;
 	};
 
 public:
 	void Render();
 	void AddToRenderList(const WorldObject&, const GLMeshShader&);
-	// void AddToRenderList(const Mesh&) override;
-	// void AddToRenderList(const Mesh&, const GLShaderProgram&);
 
 protected:
 	std::unordered_map<const WorldObject *, GLRendererRenderData>  m_RendererDataMap;
-	// std::unordered_map<const Mesh *, GLRendererRenderData>  m_RendererDataMap;
 };
 
 #endif

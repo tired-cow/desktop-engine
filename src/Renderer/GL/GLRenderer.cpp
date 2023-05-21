@@ -16,7 +16,7 @@ void GLRenderer::Render()
 		
 		glm::mat4 MVPMat = glm::mat4(1.0f);
 		MVPMat = glm::perspective(m_WorldCamera->m_FOV, m_WorldCamera->m_AspectRatio, m_WorldCamera->m_NearPlane, m_WorldCamera->m_FarPlane);
-		MVPMat = glm::translate(MVPMat, glm::vec3(worldObj.m_Position.x, worldObj.m_Position.y, worldObj.m_Position.z));
+		MVPMat = glm::translate(MVPMat, glm::vec3( m_WorldCamera->m_Position.x + worldObj.m_Position.x, -(m_WorldCamera->m_Position.y + worldObj.m_Position.y), m_WorldCamera->m_Position.z + worldObj.m_Position.z));
 		MVPMat = glm::rotate(MVPMat, worldObj.m_Rotation.x * (float)(3.14159265/180), glm::vec3(1, 0, 0));
 		MVPMat = glm::rotate(MVPMat, worldObj.m_Rotation.y * (float)(3.14159265/180), glm::vec3(0, 1, 0));
 		MVPMat = glm::rotate(MVPMat, worldObj.m_Rotation.z * (float)(3.14159265/180), glm::vec3(0, 0, 1));

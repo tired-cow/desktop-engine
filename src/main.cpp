@@ -61,12 +61,22 @@ int main()
 	WorldObject cubeObj;
 	cubeObj.m_Mesh = cube;
 	cubeObj.m_Position.z = -15.f;
+	cubeObj.m_Position.y = -3.5f;
 	cubeObj.m_Rotation.x = 180.0f;
 
 	renderer.AddToRenderList(cubeObj, meshShader);
 
+	float inc = 1;
 	while(1)
 	{
+		if (camera.m_Position.y >= 10)
+			inc = -1;
+		else if (camera.m_Position.y <= -10)
+			inc = 1;
+		
+		camera.m_Position.y += inc * .1;
+		cubeObj.m_Rotation.y += 1;
+
 		window.CheckNextEvent();
 		renderer.Render();
 		window.SwapBuffers();
