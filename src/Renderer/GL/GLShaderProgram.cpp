@@ -15,11 +15,11 @@ void GLShaderProgram::SetShader(const GLShader &shader)
 {
 	unsigned int shaderId = shader.GetId();
 	glAttachShader(m_Id, shaderId);
+	glLinkProgram(m_Id);
 }
 
 void GLShaderProgram::Use() const 
 {
-	glLinkProgram(m_Id);
 	glUseProgram(m_Id);
 }
 

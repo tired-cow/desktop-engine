@@ -1,1 +1,1 @@
-target_sources( desktop-engine PRIVATE GLRenderer.cpp GLBufferObject.cpp GLIndexBuffer.cpp GLObject.cpp GLShader.cpp GLShaderProgram.cpp GLVertexArray.cpp GLVertexBuffer.cpp)
+target_sources( desktop-engine PRIVATE GLRenderer.cpp GLBufferObject.cpp GLIndexBuffer.cpp GLObject.cpp GLShader.cpp GLShaderProgram.cpp GLVertexArray.cpp GLVertexBuffer.cpp GLMeshShader.cpp)

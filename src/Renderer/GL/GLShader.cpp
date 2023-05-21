@@ -6,14 +6,13 @@ GLShader::GLShader(unsigned int GLType)
 	
 }
 
-
 GLShader::~GLShader()
 {
 	glDeleteShader(m_Id);
 }
 
 
-bool GLShader::Compile() 
+const bool GLShader::Compile() 
 {
 	glCompileShader(m_Id);
 
@@ -24,7 +23,7 @@ bool GLShader::Compile()
 	else
 		m_Compiled = true;
 
-	return (success == GL_TRUE);
+	return m_Compiled;
 }
 
 GLenum GLShader::GetShaderType() const
@@ -38,7 +37,7 @@ void GLShader::SourceShader(const std::string &source)
 	glShaderSource(m_Id, 1, &m_ShaderSrc, NULL);
 }
 
-bool GLShader::IsCompiled() const
+const bool GLShader::IsCompiled() const
 {
 	return m_Compiled;
 }

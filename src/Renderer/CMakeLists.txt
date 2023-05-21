@@ -1,1 +1,1 @@
-target_sources( desktop-engine PRIVATE Mesh.cpp IRenderer.cpp )
+target_sources( desktop-engine PRIVATE Mesh.cpp IRenderer.cpp IMeshShader.h)

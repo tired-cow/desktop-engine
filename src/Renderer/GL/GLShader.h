@@ -6,21 +6,21 @@
 #include <iostream>
 #include <string>
 
-class GLShader : public GLObject 
+class GLShader : public GLObject
 {
 public:
-	bool Compile();
+	const bool Compile();
 	void SourceShader(const std::string&);
 
-	bool IsCompiled() const;
+	const bool IsCompiled() const;
 	unsigned int GetShaderType() const;
 	
 
 public:
 	GLShader(unsigned int);
 	~GLShader();
-	GLShader(const GLShader &) = delete;
-	GLShader &operator=(const GLShader &) = delete;
+	GLShader(const GLShader&) = delete;
+	GLShader& operator=(const GLShader&) = delete;
 
 protected:
 	unsigned int m_ShaderType;

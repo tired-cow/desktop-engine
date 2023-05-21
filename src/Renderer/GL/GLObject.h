@@ -9,6 +9,8 @@ public:
 public:
 	GLObject(unsigned int);
 	GLObject();
+	GLObject(const GLObject &) = delete;
+	GLObject &operator=(const GLObject &) = delete;
 
 protected:
 	unsigned int m_Id;
