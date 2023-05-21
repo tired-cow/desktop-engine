@@ -15,12 +15,21 @@ void GLRenderer::Render()
 		unsigned int MVPId = shaderProgram.GetUniformLocation("MVP");
 		
 		glm::mat4 MVPMat = glm::mat4(1.0f);
+		
+		// Camera Rotation
 		MVPMat = glm::perspective(m_WorldCamera->m_FOV, m_WorldCamera->m_AspectRatio, m_WorldCamera->m_NearPlane, m_WorldCamera->m_FarPlane);
+		MVPMat = glm::rotate(MVPMat, m_WorldCamera->m_Rotation.x * (float)(3.14159265/180), glm::vec3(1, 0, 0));
+		MVPMat = glm::rotate(MVPMat, m_WorldCamera->m_Rotation.y * (float)(3.14159265/180), glm::vec3(0, 1, 0));
+		MVPMat = glm::rotate(MVPMat, m_WorldCamera->m_Rotation.z * (float)(3.14159265/180), glm::vec3(0, 0, 1));
+
+		// Model & Camera translation
 		MVPMat = glm::translate(MVPMat, glm::vec3( m_WorldCamera->m_Position.x + worldObj.m_Position.x, -(m_WorldCamera->m_Position.y + worldObj.m_Position.y), m_WorldCamera->m_Position.z + worldObj.m_Position.z));
+		
+		// Model rotation
 		MVPMat = glm::rotate(MVPMat, worldObj.m_Rotation.x * (float)(3.14159265/180), glm::vec3(1, 0, 0));
 		MVPMat = glm::rotate(MVPMat, worldObj.m_Rotation.y * (float)(3.14159265/180), glm::vec3(0, 1, 0));
 		MVPMat = glm::rotate(MVPMat, worldObj.m_Rotation.z * (float)(3.14159265/180), glm::vec3(0, 0, 1));
-		// MVPMat = glm::rotate(MVPMat, )
+
 		glUniformMatrix4fv(MVPId, 1, GL_FALSE, glm::value_ptr(MVPMat));
 		
 		glDrawElements(GL_TRIANGLES, worldObj.m_Mesh.GetIndices().size(), GL_UNSIGNED_INT, (void*)0);

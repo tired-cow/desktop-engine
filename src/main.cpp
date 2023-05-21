@@ -69,6 +69,8 @@ int main()
 	float inc = 1;
 	while(1)
 	{
+		camera.m_Rotation.y += 1;
+
 		if (camera.m_Position.y >= 10)
 			inc = -1;
 		else if (camera.m_Position.y <= -10)
