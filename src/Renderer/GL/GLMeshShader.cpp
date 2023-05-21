@@ -1,12 +1,7 @@
 #include "GLMeshShader.h"
 
-void GLMeshShader::Use()
+void GLMeshShader::Use() const
 {
-	for (const auto &key : m_ShaderMap)
-	{
-		m_ShaderProgram.SetShader(*key.second);
-	}
-
 	m_ShaderProgram.Use();
 }
 
@@ -21,6 +16,16 @@ void GLMeshShader::SetShader(unsigned int GLShaderType, const std::string &fileP
 		std::cout << "Failed to compile!\n";
 		exit(1);
 	}
+
+	m_ShaderProgram.SetShader(*m_ShaderMap[GLShaderType]);
+}
+
+
+// Should probably be replaced with something else
+// if you want to set uniforms
+const GLShaderProgram &GLMeshShader::GetShaderProgram() const
+{
+	return m_ShaderProgram;
 }
 
 GLMeshShader::GLMeshShader()

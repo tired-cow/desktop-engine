@@ -14,8 +14,9 @@
 class GLMeshShader : public IMeshShader
 {
 public:
-	void Use() override;
+	void Use() const override;
 	void SetShader(unsigned int, const std::string&);
+	const GLShaderProgram& GetShaderProgram() const;
 
 public:
 	GLMeshShader();

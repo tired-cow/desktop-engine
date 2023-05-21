@@ -4,7 +4,7 @@
 class IMeshShader
 {
 public:
-	virtual void Use() = 0;
+	virtual void Use() const = 0;
 };
 
 #endif

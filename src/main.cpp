@@ -51,38 +51,23 @@ int main()
 	Mesh cube = loader.LoadVerticesFromFile("assets/chickenV2.obj");
 	
 	WorldCamera camera;
-
 	GLRenderer renderer;
 	renderer.SetWorldCamera(&camera);
-	renderer.AddToRenderList(cube);
 
 	GLMeshShader meshShader;
 	meshShader.SetShader(GL_VERTEX_SHADER, "assets/vertex.glsl");
 	meshShader.SetShader(GL_FRAGMENT_SHADER, "assets/fragment.glsl");
-	meshShader.Use();
 
-	// unsigned int projMatId = m_ShaderProgram.GetUniformLocation("projection");
-	// glm::mat4 projMat = glm::mat4(1.0f);
-	// projMat = glm::perspective(camera.m_FOV, camera.m_AspectRatio, camera.m_NearPlane, camera.m_FarPlane);
-	// glUniformMatrix4fv(projMatId, 1, GL_FALSE, glm::value_ptr(projMat));
+	WorldObject cubeObj;
+	cubeObj.m_Mesh = cube;
+	cubeObj.m_Position.z = -15.f;
+	cubeObj.m_Rotation.x = 180.0f;
 
-	// unsigned int modelMatId = m_ShaderProgram.GetUniformLocation("model");
-	// glm::mat4 modelMat = glm::mat4(1.0f);
-	// modelMat = glm::translate(modelMat, glm::vec3(0, 5, -10.5f));
-	// modelMat = glm::rotate(modelMat, 3.14159265f, glm::vec3(1, 0, 0));
-	// glUniformMatrix4fv(modelMatId, 1, GL_FALSE, glm::value_ptr(modelMat));
-	
-
-	// Event event = window.GetNextEvent();
-	// event = window.GetNextEvent();
-	// event = window.GetNextEvent();
-
+	renderer.AddToRenderList(cubeObj, meshShader);
 
 	while(1)
 	{
 		window.CheckNextEvent();
-		// modelMat = glm::rotate(modelMat, 1 * 3.14159265f/180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-		// glUniformMatrix4fv(modelMatId, 1, GL_FALSE, glm::value_ptr(modelMat));
 		renderer.Render();
 		window.SwapBuffers();
 	}
