@@ -48,7 +48,7 @@ int main()
 	glDebugMessageCallback(MessageCallback, 0);
 
 	AssetLoader &loader = AssetLoader::GetInstance();
-	Mesh cube = loader.LoadVerticesFromFile("assets/chickenV2.obj");
+	Mesh chickMesh = loader.LoadVerticesFromFile("assets/chickenV2.obj");
 	
 	WorldCamera camera;
 	GLRenderer renderer;
@@ -58,26 +58,37 @@ int main()
 	meshShader.SetShader(GL_VERTEX_SHADER, "assets/vertex.glsl");
 	meshShader.SetShader(GL_FRAGMENT_SHADER, "assets/fragment.glsl");
 
-	WorldObject cubeObj;
-	cubeObj.m_Mesh = cube;
-	cubeObj.m_Position.z = -15.f;
-	cubeObj.m_Position.y = -3.5f;
-	cubeObj.m_Rotation.x = 180.0f;
+	WorldObject chick1;
+	chick1.m_Mesh = chickMesh;
+	chick1.m_Position.z = -15.f;
+	chick1.m_Position.y = -3.5f;
+	chick1.m_Rotation.x = 180.0f;
 
-	renderer.AddToRenderList(cubeObj, meshShader);
+	WorldObject chick2;
+	chick2.m_Mesh = chickMesh;
+	chick2.m_Position.z = -15.f;
+	chick2.m_Position.x = -15.f;
+	chick2.m_Position.y = -3.5f;
+	chick2.m_Rotation.x = 180.0f;
+
+
+	renderer.AddToRenderList(chick1, meshShader);
+	renderer.AddToRenderList(chick2, meshShader);
+
 
 	float inc = 1;
 	while(1)
 	{
-		camera.m_Rotation.y += 1;
+		// // camera.m_Rotation.y += 1;
 
-		if (camera.m_Position.y >= 10)
-			inc = -1;
-		else if (camera.m_Position.y <= -10)
-			inc = 1;
+		// if (chick1.m_Position.y >= 10)
+		// 	inc = -1;
+		// else if (chick1.m_Position.y <= -10)
+		// 	inc = 1;
 		
-		camera.m_Position.y += inc * .1;
-		cubeObj.m_Rotation.y += 1;
+		// // camera.m_Position.y += inc * .1;
+		// chick1.m_Rotation.y += 1;
+		// chick1.m_Position.y += inc;
 
 		window.CheckNextEvent();
 		renderer.Render();
