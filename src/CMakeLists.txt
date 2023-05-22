@@ -11,6 +11,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/Renderer/)
 add_subdirectory(${PROJECT_SOURCE_DIR}/Renderer/GL/)
 add_subdirectory(${PROJECT_SOURCE_DIR}/World/)
 add_subdirectory(${PROJECT_SOURCE_DIR}/Math/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Components/)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Events/)
@@ -21,6 +22,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Rendere
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Renderer/GL/)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/World/)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Math/)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/Componets/)
 
 target_include_directories(${PROJECT_NAME} PUBLIC /usr/include/)
 target_link_directories(${PROJECT_NAME} PRIVATE /usr/lib/)

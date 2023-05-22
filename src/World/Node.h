@@ -9,14 +9,15 @@ class Node
 {
 public:
 	Node() = default;
-	Node(const std::string&, Node*);
+	Node(const std::string&, const Node&);
 	
-	void SetParent(Node*);
+	void SetParent(const Node&);
+	void AddChild(const Node&);
 
 protected:
 	std::string m_Name;
-	Node const *m_Parent;
-	std::vector<Node const*> m_Children;
+	std::shared_ptr<Node> m_Parent;
+	std::vector< std::shared_ptr<Node> > m_Children;
 };
 
 #endif
