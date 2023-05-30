@@ -41,7 +41,10 @@ void GLRenderer::AddToRenderList(const WorldObject &worldObj, const GLMeshShader
 
 	data.m_VertexArray.Bind();
 
-	data.m_VertexBuffer.BufferData(worldObj.m_Mesh.GetVertices());
+	std::vector<float> temp;
+	FormatVertexData(worldObj.m_Mesh, temp);
+	
+	data.m_VertexBuffer.BufferData(temp);
 	data.m_VertexBuffer.Bind();
 
 	data.m_IndexBuffer.BufferData(worldObj.m_Mesh.GetIndices());
@@ -49,5 +52,21 @@ void GLRenderer::AddToRenderList(const WorldObject &worldObj, const GLMeshShader
 
 	// Must be done after other bindings
 	data.m_VertexArray.AddVertexAttribute(3, GL_FLOAT);
+	data.m_VertexArray.AddVertexAttribute(2, GL_FLOAT);
 	data.m_MeshShader = &meshShader;
+}
+
+void GLRenderer::FormatVertexData(const Mesh &mesh, std::vector<float> &dataVec)
+{
+	const std::vector<float> &verts = mesh.GetVertices();
+	const std::vector<float> &tCoords = mesh.GetTextureCoordinates();
+	
+	for (unsigned int vertIndex = 0; vertIndex < (verts.size() / 3); vertIndex++)
+	{
+		for (unsigned int vertPosComp = vertIndex*3; vertPosComp < vertIndex*3 + 3; vertPosComp++)
+			dataVec.push_back(verts.at(vertPosComp));
+
+		for (int tCoordComp = vertIndex * 2; tCoordComp < vertIndex*2 + 2; tCoordComp++)
+			dataVec.push_back(tCoords.at(tCoordComp));
+	}
 }

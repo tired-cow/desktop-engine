@@ -1,1 +1,1 @@
-target_sources(desktop-engine PRIVATE Component.h)
+target_sources(desktop-engine PRIVATE Component.cpp MeshComponent.cpp)

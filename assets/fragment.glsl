@@ -1,8 +1,13 @@
 #version 450 core
 
-in vec4 v_color;
-out vec4 color;
+uniform sampler2D tex;
 
-void main() {
-    color = v_color;
+layout (location = 0) out vec4 color;
+in vec2 textureCoordinate;
+//in vec4 vertexColor;
+
+void main() 
+{
+    color = texture2D(tex, textureCoordinate);
+	//color = vertexColor;
 }

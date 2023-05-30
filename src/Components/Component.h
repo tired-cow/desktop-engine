@@ -8,6 +8,9 @@ class Component
 public:
 	const std::string& GetName() const;
 
+public:
+	Component(const std::string&);
+
 protected:
 	std::string m_Name;
 

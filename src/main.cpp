@@ -1,3 +1,5 @@
+#define STB_IMAGE_IMPLEMENTATION
+
 #include <GL/glew.h>
 #include "World/WorldCamera.h"
 #include "Windowing/EngineWindow.h"
@@ -8,10 +10,7 @@
 #include "Renderer/GL/GLRenderer.h"
 #include "Events/EventManager.h" 
 
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/glm.hpp>
-
+#include <stb/stb_image.h>
 
 void GLAPIENTRY
 MessageCallback( GLenum source,
@@ -48,7 +47,7 @@ int main()
 	glDebugMessageCallback(MessageCallback, 0);
 
 	AssetLoader &loader = AssetLoader::GetInstance();
-	Mesh chickMesh = loader.LoadVerticesFromFile("assets/chickenV2.obj");
+	Mesh chickMesh = loader.LoadMeshFromFile("assets/untitled.obj");
 	
 	WorldCamera camera;
 	GLRenderer renderer;
@@ -74,7 +73,32 @@ int main()
 
 	renderer.AddToRenderList(chick1, meshShader);
 	renderer.AddToRenderList(chick2, meshShader);
+	//Textures
+	stbi_set_flip_vertically_on_load(1);
+	unsigned char* pixelBuff;
+	int w, h, bpp;
+	pixelBuff = stbi_load("assets/Block.png", &w, &h, &bpp, 4);
 
+	unsigned int tId;
+	glCreateTextures(GL_TEXTURE_2D, 1, &tId);
+	
+	// INTERNAL FORMAT IS RGBA8
+	glTextureStorage2D(tId, 1, GL_RGBA8, w, h);
+	
+	// EXTERNAL FORMAT IS RGBA
+	glTextureSubImage2D(tId, 0, 0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixelBuff);
+	
+	unsigned int sampler;
+	
+	glCreateSamplers(1, &sampler);
+	glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	glBindSampler(0, sampler);
+
+	stbi_image_free(pixelBuff);
 
 	float inc = 1;
 	while(1)
@@ -87,10 +111,11 @@ int main()
 		// 	inc = 1;
 		
 		// // camera.m_Position.y += inc * .1;
-		// chick1.m_Rotation.y += 1;
-		// chick1.m_Position.y += inc;
+		chick1.m_Rotation.y += 1;
+
 
 		window.CheckNextEvent();
+		glBindTexture(GL_TEXTURE_2D, tId);
 		renderer.Render();
 		window.SwapBuffers();
 	}

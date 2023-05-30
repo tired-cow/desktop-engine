@@ -16,7 +16,7 @@ class AssetLoader
 public:
 	AssetLoader(const AssetLoader&) = delete;
 	static AssetLoader& GetInstance();
-	[[nodiscard]] Mesh LoadVerticesFromFile(const std::string&) const;
+	[[nodiscard]] Mesh LoadMeshFromFile(const std::string&) const;
 	[[nodiscard]] std::string const LoadShaderFromFile(const std::string&) const;
 
 protected:

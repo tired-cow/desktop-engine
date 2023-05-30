@@ -36,6 +36,7 @@ public:
 	void AddToRenderList(const WorldObject&, const GLMeshShader&);
 
 protected:
+	void FormatVertexData(const Mesh&, std::vector<float>&);
 	std::unordered_map<const WorldObject *, GLRendererRenderData>  m_RendererDataMap;
 };
 
